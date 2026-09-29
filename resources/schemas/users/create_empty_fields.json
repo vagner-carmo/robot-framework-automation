@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": [
+    "nome",
+    "email",
+    "password",
+    "administrador"
+  ],
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "administrador": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
