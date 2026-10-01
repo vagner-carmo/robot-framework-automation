@@ -4,6 +4,8 @@ Resource   ../../resources/keywords/api_keywords.robot
 
 *** Test Cases ***
 User Should Be Created Successfully
+    [Documentation]    Verifies that a user can be created successfully.
+    [Tags]    api    users    smoke    regression
     ${user}=    Create Random User
 
     ${response}=    Create User
@@ -27,6 +29,8 @@ User Should Be Created Successfully
     Dictionary Should Contain Key    ${response_body}    _id
 
 User Should Not Be Created With Duplicate Email
+    [Documentation]    Verifies that a user cannot be created with an existing email.
+    [Tags]    api    users    regression
     ${user}=    Create Random User
 
     ${first_response}=    Create User
@@ -56,6 +60,8 @@ User Should Not Be Created With Duplicate Email
     Validate Response Contains Message    ${response_body}
 
 User Should Not Be Created With Empty Required Fields
+    [Documentation]    Verifies that a user cannot be created with empty required fields.
+    [Tags]    api    users    regression
     ${response}=    Create User
     ...    ${EMPTY}
     ...    ${EMPTY}
@@ -78,6 +84,8 @@ User Should Not Be Created With Empty Required Fields
     Dictionary Should Contain Key    ${response_body}    administrador
 
 User Should Be Retrieved Successfully
+    [Documentation]    Verifies that a user can be retrieved successfully by its ID.
+    [Tags]    api    users    smoke    regression
     ${user}    ${user_id}=    Create Random User And Return Id
 
     ${response}=    Get User    ${user_id}
@@ -98,6 +106,8 @@ User Should Be Retrieved Successfully
     Should Be Equal    ${response_body}[administrador]    ${user}[administrator]
 
 All Users Should Be Retrieved Successfully
+    [Documentation]    Verifies that all users can be retrieved successfully.
+    [Tags]    api    users    regression
     ${first_user}    ${first_user_id}=    Create Random User And Return Id
     ${second_user}    ${second_user_id}=    Create Random User And Return Id
 
@@ -120,6 +130,8 @@ All Users Should Be Retrieved Successfully
     Should Contain    ${user_ids}    ${second_user_id}
 
 User Should Not Be Retrieved With Nonexistent Id
+    [Documentation]    Verifies that a user cannot be retrieved with an invalid ID.
+    [Tags]    api    users    regression
     ${nonexistent_id}=    FakerLibrary.Password    length=16    special_chars=False
 
     ${response}=    Get User    ${nonexistent_id}    400
@@ -137,6 +149,8 @@ User Should Not Be Retrieved With Nonexistent Id
     Should Be Equal    ${message}    Usuário não encontrado
 
 User Should Be Updated Successfully
+    [Documentation]    Verifies that a user can be updated successfully.
+    [Tags]    api    users    regression
     ${user}    ${user_id}=    Create Random User And Return Id
 
     ${updated_user}=    Create Random User
@@ -177,6 +191,8 @@ User Should Be Updated Successfully
     Should Be Equal    ${response_body}[administrador]    ${updated_user}[administrator]
 
 User Should Not Be Updated With Existing Email
+    [Documentation]    Verifies that a user cannot be updated with an existing email.
+    [Tags]    api    users    regression
     ${first_user}    ${first_user_id}=    Create Random User And Return Id
     ${second_user}    ${second_user_id}=    Create Random User And Return Id
 
@@ -201,6 +217,8 @@ User Should Not Be Updated With Existing Email
     Should Be Equal    ${message}    Este email já está sendo usado
 
 User Should Be Deleted Successfully
+    [Documentation]    Verifies that a user can be deleted successfully.
+    [Tags]    api    users    regression
     ${user}    ${user_id}=    Create Random User And Return Id
 
     ${delete_response}=    Delete User    ${user_id}

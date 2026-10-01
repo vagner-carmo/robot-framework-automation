@@ -5,6 +5,8 @@ Resource    ../../resources/variables/api_variables.robot
 
 *** Test Cases ***
 Product Should Be Created Successfully
+    [Documentation]    Verifies that a product can be created successfully.
+    [Tags]    api    products    smoke    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${response}=    Create Random Product    ${token}
@@ -25,6 +27,8 @@ Product Should Be Created Successfully
     Should Not Be Empty    ${product_id}
 
 Product Should Not Be Created With Duplicate Name
+    [Documentation]    Verifies that a product cannot be created with an existing name.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${first_product}    ${first_response}=    Create Random Product    ${token}
@@ -59,6 +63,8 @@ Product Should Not Be Created With Duplicate Name
     Should Be Equal    ${message}    Já existe produto com esse nome
 
 Product Should Not Be Created With Invalid Token
+    [Documentation]    Verifies that a product cannot be created with an invalid token.
+    [Tags]    api    products    regression
     ${invalid_token}=    FakerLibrary.Password    length=32    special_chars=False
 
     ${product}    ${response}=    Create Random Product
@@ -80,6 +86,8 @@ Product Should Not Be Created With Invalid Token
     ...    Token de acesso ausente, inválido, expirado ou usuário do token não existe mais
 
 All Products Should Be Retrieved Successfully
+    [Documentation]    Verifies that all products can be retrieved successfully.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${first_product}    ${first_response}=    Create Random Product    ${token}
@@ -124,6 +132,8 @@ All Products Should Be Retrieved Successfully
     Should Contain    ${product_ids}    ${second_product_id}
 
 Product Should Be Retrieved Successfully
+    [Documentation]    Verifies that a product can be retrieved successfully by its ID.
+    [Tags]    api    products    smoke    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}
@@ -157,6 +167,8 @@ Product Should Be Retrieved Successfully
     Should Be Equal    ${response_body}[quantidade]    ${product}[quantity]
 
 Product Should Not Be Retrieved With Invalid Id
+    [Documentation]    Verifies that a product cannot be retrieved with an invalid ID.
+    [Tags]    api    products    regression
     ${invalid_id}=    FakerLibrary.Password    length=16    special_chars=False
 
     ${response}=    Get Product
@@ -176,6 +188,8 @@ Product Should Not Be Retrieved With Invalid Id
     Should Be Equal    ${message}    Produto não encontrado
 
 Product Should Be Deleted Successfully
+    [Documentation]    Verifies that a product can be deleted successfully.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}
@@ -224,6 +238,8 @@ Product Should Be Deleted Successfully
     Should Be Equal    ${get_message}    Produto não encontrado
 
 Product Should Not Be Deleted With Invalid Token
+    [Documentation]    Verifies that a product cannot be deleted with an invalid token.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}
@@ -277,6 +293,8 @@ Product Should Not Be Deleted With Invalid Token
     Should Be Equal    ${get_body}[_id]    ${product_id}
 
 Product Should Not Be Deleted When Associated With Cart
+    [Documentation]    Verifies that a product associated with a cart cannot be deleted.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}
@@ -336,6 +354,8 @@ Product Should Not Be Deleted When Associated With Cart
     Should Be Equal    ${get_body}[_id]    ${product_id}
 
 Product Should Be Updated Successfully
+    [Documentation]    Verifies that a product can be updated successfully.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}
@@ -391,6 +411,8 @@ Product Should Be Updated Successfully
     Should Be Equal As Numbers    ${get_body}[quantidade]    ${new_quantity}
 
 Product Should Not Be Updated With Duplicate Name
+    [Documentation]    Verifies that a product cannot be updated with an existing name.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${first_product}    ${first_response}=    Create Random Product    ${token}
@@ -438,6 +460,8 @@ Product Should Not Be Updated With Duplicate Name
     Should Be Equal    ${message}    Já existe produto com esse nome
 
 Product Should Not Be Updated With Invalid Token
+    [Documentation]    Verifies that a product cannot be updated with an invalid token.
+    [Tags]    api    products    regression
     ${token}=    Create Random Admin User And Login
 
     ${product}    ${create_response}=    Create Random Product    ${token}

@@ -4,6 +4,8 @@ Resource   ../../resources/keywords/api_keywords.robot
 
 *** Test Cases ***
 User Should Be Able To Login Successfully
+    [Documentation]    Verifies that a user can log in successfully with valid credentials.
+    [Tags]    api    login    smoke    regression
     ${user}    ${user_id}=    Create Random User And Return Id
 
     ${login_response}=    Login With Credentials
@@ -27,6 +29,8 @@ User Should Be Able To Login Successfully
 
 
 User Should Not Be Able To Login With Invalid Credentials
+    [Documentation]    Verifies that a user cannot log in with invalid credentials.
+    [Tags]    api    login    regression
     ${user}=    Create Random User
 
     ${response}=    Login With Credentials
@@ -45,6 +49,8 @@ User Should Not Be Able To Login With Invalid Credentials
     ...    ${LOGIN_INVALID_SCHEMA}
 
 User Should Not Be Able To Login With Empty Fields
+    [Documentation]    Verifies that login fails when required fields are empty.
+    [Tags]    api    login    regression
     ${response}=    Login With Credentials
     ...    ${EMPTY}
     ...    ${EMPTY}
