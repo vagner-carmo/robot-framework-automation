@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "required": [
+    "quantidade",
+    "produtos"
+  ],
+  "properties": {
+    "quantidade": {
+      "type": "integer"
+    },
+    "produtos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "_id",
+          "nome",
+          "preco",
+          "descricao",
+          "quantidade"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "preco": {
+            "type": "integer"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "integer"
+          },
+          "imagem": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

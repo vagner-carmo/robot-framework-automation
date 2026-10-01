@@ -114,6 +114,39 @@ Create Random User And Return Id
     RETURN    ${user}    ${user_id}
 
 
+Create Random Admin User And Login
+    [Documentation]    Creates a random administrator user, logs in with the created credentials, and returns the authorization token.
+
+    ${user}=    Create Random User
+
+    ${create_response}=    Create User
+    ...    ${user}[name]
+    ...    ${user}[email]
+    ...    ${user}[password]
+    ...    ${user}[administrator]
+
+    Status Should Be    201    ${create_response}
+
+    ${create_body}=    Validate Response Is JSON    ${create_response}
+    Validate Response Is Object    ${create_body}
+
+    ${login_response}=    Login With Credentials
+    ...    ${user}[email]
+    ...    ${user}[password]
+
+    Status Should Be    200    ${login_response}
+
+    ${login_body}=    Validate Response Is JSON    ${login_response}
+    Validate Response Is Object    ${login_body}
+
+    Dictionary Should Contain Key    ${login_body}    authorization
+
+    ${token}=    Get From Dictionary    ${login_body}    authorization
+    Should Not Be Empty    ${token}
+
+    RETURN    ${token}
+    
+
 Get All Users
     [Documentation]    Retrieves all registered users and returns the API response.
     [Arguments]    ${expected_status}=200
@@ -182,3 +215,154 @@ Validate Response Against Schema
     [Arguments]    ${response_body}    ${schema_path}
 
     Validate Json By Schema File    ${response_body}    ${schema_path}
+
+
+Create Product
+    [Documentation]    Creates a product using the provided data and authorization token.
+    [Arguments]    ${name}    ${price}    ${description}    ${quantity}    ${token}    ${expected_status}=201
+
+    ${headers}=    Create Dictionary
+    ...    Authorization=${token}
+    ...    Content-Type=application/json
+
+    ${body}=    Create Dictionary
+    ...    nome=${name}
+    ...    preco=${price}
+    ...    descricao=${description}
+    ...    quantidade=${quantity}
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    POST On Session
+    ...    api
+    ...    /produtos
+    ...    json=${body}
+    ...    headers=${headers}
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}
+
+
+Create Random Product
+    [Documentation]    Creates a product with randomly generated data and returns the product data and API response.
+    [Arguments]    ${token}    ${expected_status}=201
+
+    ${product_name}=    FakerLibrary.Name
+    ${description}=    FakerLibrary.Sentence
+    ${price}=    FakerLibrary.Random Int    min=1    max=1000
+    ${quantity}=    FakerLibrary.Random Int    min=1    max=100
+
+    ${response}=    Create Product
+    ...    ${product_name}
+    ...    ${price}
+    ...    ${description}
+    ...    ${quantity}
+    ...    ${token}
+    ...    ${expected_status}
+
+    ${product}=    Create Dictionary
+    ...    name=${product_name}
+    ...    description=${description}
+    ...    price=${price}
+    ...    quantity=${quantity}
+
+    RETURN    ${product}    ${response}
+
+
+Get All Products
+    [Documentation]    Retrieves all products and returns the API response.
+    [Arguments]    ${expected_status}=200
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    GET On Session
+    ...    api
+    ...    /produtos
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}
+
+
+Get Product
+    [Documentation]    Retrieves a product by its ID and returns the API response.
+    [Arguments]    ${product_id}    ${expected_status}=200
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    GET On Session
+    ...    api
+    ...    /produtos/${product_id}
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}
+
+Delete Product
+    [Documentation]    Deletes a product by its ID using the provided authorization token.
+    [Arguments]    ${product_id}    ${token}    ${expected_status}=200
+
+    ${headers}=    Create Dictionary
+    ...    Authorization=${token}
+    ...    Content-Type=application/json
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    DELETE On Session
+    ...    api
+    ...    /produtos/${product_id}
+    ...    headers=${headers}
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}
+
+Create Cart
+    [Documentation]    Creates a shopping cart with the provided product and quantity using the authorization token.
+    [Arguments]    ${product_id}    ${quantity}    ${token}    ${expected_status}=201
+
+    ${headers}=    Create Dictionary
+    ...    Authorization=${token}
+    ...    Content-Type=application/json
+
+    ${product}=    Create Dictionary
+    ...    idProduto=${product_id}
+    ...    quantidade=${quantity}
+
+    ${products}=    Create List    ${product}
+
+    ${body}=    Create Dictionary
+    ...    produtos=${products}
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    POST On Session
+    ...    api
+    ...    /carrinhos
+    ...    json=${body}
+    ...    headers=${headers}
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}
+
+Update Product
+    [Documentation]    Updates a product by its ID using the provided data and authorization token.
+    [Arguments]    ${product_id}    ${name}    ${price}    ${description}    ${quantity}    ${token}    ${expected_status}=200
+
+    ${headers}=    Create Dictionary
+    ...    Authorization=${token}
+    ...    Content-Type=application/json
+
+    ${body}=    Create Dictionary
+    ...    nome=${name}
+    ...    preco=${price}
+    ...    descricao=${description}
+    ...    quantidade=${quantity}
+
+    Create Session    api    ${API_BASE_URL}
+
+    ${response}=    PUT On Session
+    ...    api
+    ...    /produtos/${product_id}
+    ...    json=${body}
+    ...    headers=${headers}
+    ...    expected_status=${expected_status}
+
+    RETURN    ${response}

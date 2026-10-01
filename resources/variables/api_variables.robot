@@ -13,3 +13,16 @@ ${USER_GET_NOT_FOUND_SCHEMA}        ${EXECDIR}/resources/schemas/users/get_not_f
 ${USER_UPDATE_SUCCESS_SCHEMA}       ${EXECDIR}/resources/schemas/users/update_success.json
 ${USER_DELETE_SUCCESS_SCHEMA}       ${EXECDIR}/resources/schemas/users/delete_success.json
 ${USER_CREATE_EMPTY_FIELDS_SCHEMA}    ${EXECDIR}/resources/schemas/users/create_empty_fields.json
+
+${PRODUCT_CREATE_SUCCESS_SCHEMA}    ${EXECDIR}/resources/schemas/products/create_success.json
+${PRODUCT_CREATE_ERROR_SCHEMA}    ${EXECDIR}/resources/schemas/products/create_error.json
+${PRODUCT_CREATE_INVALID_TOKEN_SCHEMA}    ${EXECDIR}/resources/schemas/products/create_invalid_token.json
+${PRODUCT_GET_ALL_SCHEMA}    ${EXECDIR}/resources/schemas/products/get_all_success.json
+${PRODUCT_GET_SUCCESS_SCHEMA}    ${EXECDIR}/resources/schemas/products/get_success.json
+${PRODUCT_GET_NOT_FOUND_SCHEMA}    ${EXECDIR}/resources/schemas/products/get_not_found.json
+${PRODUCT_DELETE_SUCCESS_SCHEMA}    ${EXECDIR}/resources/schemas/products/delete_success.json
+${PRODUCT_DELETE_INVALID_TOKEN_SCHEMA}    ${EXECDIR}/resources/schemas/products/delete_invalid_token.json
+${PRODUCT_DELETE_CART_ERROR_SCHEMA}    ${EXECDIR}/resources/schemas/products/delete_cart_error.json
+${PRODUCT_UPDATE_SUCCESS_SCHEMA}    ${EXECDIR}/resources/schemas/products/update_success.json
+${PRODUCT_UPDATE_DUPLICATE_NAME_SCHEMA}    ${EXECDIR}/resources/schemas/products/update_duplicate_name.json
+${PRODUCT_UPDATE_INVALID_TOKEN_SCHEMA}    ${EXECDIR}/resources/schemas/products/update_invalid_token.json
