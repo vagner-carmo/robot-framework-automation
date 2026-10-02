@@ -2,6 +2,9 @@
 Resource    ../../resources/keywords/api_keywords.robot
 Resource    ../../resources/keywords/ui_keywords.robot
 
+Suite Setup       Open Browser Session
+Suite Teardown    Close All Browsers
+
 *** Test Cases ***
 User Should Be Able To Login Successfully
     [Documentation]    Verifies that a user can log in successfully through the web interface.
