@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary    timeout=10s
+Library    OperatingSystem
 Resource    ../variables/ui_variables.robot
 Resource    ../locators/login_locators.robot
 Resource    ../locators/register_locators.robot
@@ -8,8 +9,15 @@ Resource    ../locators/product_locators.robot
 *** Keywords ***
 Open Browser Session
     [Documentation]    Opens a browser session for the test suite.
-    Open Browser    ${UI_BASE_URL}/login    Chrome
-    Maximize Browser Window
+    IF    $HEADLESS
+        ${options}=    Evaluate    sys.modules['selenium'].webdriver.ChromeOptions()    sys
+        Evaluate    $options.add_argument("--headless=new")
+        Evaluate    $options.add_argument("--window-size=1920,1080")
+        Open Browser    ${UI_BASE_URL}/login    Chrome    options=${options}
+    ELSE
+        Open Browser    ${UI_BASE_URL}/login    Chrome
+        Maximize Browser Window
+    END
 
 
 Open Login Page
@@ -171,8 +179,15 @@ Verify Product Name Already Exists
 Open Product Test Session
     [Documentation]    Opens the browser, creates an administrator, authenticates the user, and stores the API token for the product test suite.
 
-    Open Browser    ${UI_BASE_URL}/login    Chrome
-    Maximize Browser Window
+    IF    $HEADLESS
+        ${options}=    Evaluate    sys.modules['selenium'].webdriver.ChromeOptions()    sys
+        Evaluate    $options.add_argument("--headless=new")
+        Evaluate    $options.add_argument("--window-size=1920,1080")
+        Open Browser    ${UI_BASE_URL}/login    Chrome    options=${options}
+    ELSE
+        Open Browser    ${UI_BASE_URL}/login    Chrome
+        Maximize Browser Window
+    END
 
     ${admin}=    Create Random User
 
