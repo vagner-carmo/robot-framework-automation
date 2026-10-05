@@ -166,3 +166,37 @@ Verify Product Name Already Exists
     ...    Já existe produto com esse nome
 
     Location Should Be    ${UI_BASE_URL}/admin/cadastrarprodutos
+
+
+Open Product Test Session
+    [Documentation]    Opens the browser, creates an administrator, authenticates the user, and stores the API token for the product test suite.
+
+    Open Browser    ${UI_BASE_URL}/login    Chrome
+    Maximize Browser Window
+
+    ${admin}=    Create Random User
+
+    ${response}=    Create User
+    ...    ${admin}[name]
+    ...    ${admin}[email]
+    ...    ${admin}[password]
+    ...    ${admin}[administrator]
+
+    Status Should Be    201    ${response}
+
+    ${login_response}=    Login With Credentials
+    ...    ${admin}[email]
+    ...    ${admin}[password]
+
+    Status Should Be    200    ${login_response}
+
+    ${token}=    Set Variable    ${login_response.json()}[authorization]
+
+    Login Through UI
+    ...    ${admin}[email]
+    ...    ${admin}[password]
+
+    Verify Successful Login    ${admin}[name]
+
+    Set Suite Variable    ${ADMIN_USER}    ${admin}
+    Set Suite Variable    ${API_TOKEN}    ${token}
