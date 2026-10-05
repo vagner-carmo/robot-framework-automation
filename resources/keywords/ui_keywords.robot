@@ -3,6 +3,7 @@ Library    SeleniumLibrary    timeout=10s
 Resource    ../variables/ui_variables.robot
 Resource    ../locators/login_locators.robot
 Resource    ../locators/register_locators.robot
+Resource    ../locators/product_locators.robot
 
 *** Keywords ***
 Open Browser Session
@@ -106,3 +107,62 @@ Verify Empty Registration Fields
     Element Text Should Be    ${REGISTER_NAME_REQUIRED_MESSAGE}        Nome é obrigatório
     Element Text Should Be    ${REGISTER_EMAIL_REQUIRED_MESSAGE}       Email é obrigatório
     Element Text Should Be    ${REGISTER_PASSWORD_REQUIRED_MESSAGE}    Password é obrigatório
+
+
+Open Product Registration Page
+    [Documentation]    Opens the product registration page from the main navigation.
+    Click Element    ${PRODUCT_REGISTER_NAV}
+
+
+Fill Product Registration Form
+    [Documentation]    Fills the product registration form with the provided information and image.
+    [Arguments]    ${name}    ${price}    ${description}    ${quantity}    ${image_path}
+
+    Input Text    ${PRODUCT_NAME_INPUT}           ${name}
+    Input Text    ${PRODUCT_PRICE_INPUT}          ${price}
+    Input Text    ${PRODUCT_DESCRIPTION_INPUT}    ${description}
+    Input Text    ${PRODUCT_QUANTITY_INPUT}       ${quantity}
+    Choose File   ${PRODUCT_IMAGE_INPUT}          ${image_path}
+
+
+Submit Product Registration
+    [Documentation]    Submits the product registration form.
+    Click Element    ${PRODUCT_REGISTER_BUTTON}
+
+
+Verify Product Is Listed
+    [Documentation]    Verifies that the registered product is displayed in the product list.
+    [Arguments]    ${product_name}
+
+    ${product_locator}=    Set Variable    xpath=//table//td[normalize-space()='${product_name}']
+
+    Wait Until Element Is Visible    ${product_locator}
+    Element Text Should Be           ${product_locator}    ${product_name}
+
+
+Verify Empty Product Fields
+    [Documentation]    Verifies that required field validation messages are displayed when product fields are empty.
+
+    Wait Until Element Is Visible    ${PRODUCT_NAME_REQUIRED_MESSAGE}
+    Wait Until Element Is Visible    ${PRODUCT_PRICE_REQUIRED_MESSAGE}
+    Wait Until Element Is Visible    ${PRODUCT_DESCRIPTION_REQUIRED_MESSAGE}
+    Wait Until Element Is Visible    ${PRODUCT_QUANTITY_REQUIRED_MESSAGE}
+
+    Element Text Should Be    ${PRODUCT_NAME_REQUIRED_MESSAGE}           Nome é obrigatório
+    Element Text Should Be    ${PRODUCT_PRICE_REQUIRED_MESSAGE}          Preco é obrigatório
+    Element Text Should Be    ${PRODUCT_DESCRIPTION_REQUIRED_MESSAGE}   Descricao é obrigatório
+    Element Text Should Be    ${PRODUCT_QUANTITY_REQUIRED_MESSAGE}       Quantidade é obrigatório
+
+    Location Should Be    ${UI_BASE_URL}/admin/cadastrarprodutos
+
+
+Verify Product Name Already Exists
+    [Documentation]    Verifies that an error message is displayed when a product with the same name already exists.
+
+    Wait Until Element Is Visible    ${PRODUCT_NAME_EXISTS_MESSAGE}
+
+    Element Text Should Be
+    ...    ${PRODUCT_NAME_EXISTS_MESSAGE}
+    ...    Já existe produto com esse nome
+
+    Location Should Be    ${UI_BASE_URL}/admin/cadastrarprodutos

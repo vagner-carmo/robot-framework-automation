@@ -243,6 +243,23 @@ Create Product
     RETURN    ${response}
 
 
+Create Random Product Data
+    [Documentation]    Generates random product data using Faker and returns the product information as a dictionary.
+
+    ${product_name}=    FakerLibrary.Name
+    ${description}=    FakerLibrary.Sentence
+    ${price}=    FakerLibrary.Random Int    min=1    max=1000
+    ${quantity}=    FakerLibrary.Random Int    min=1    max=100
+
+    ${product}=    Create Dictionary
+    ...    name=${product_name}
+    ...    description=${description}
+    ...    price=${price}
+    ...    quantity=${quantity}
+
+    RETURN    ${product}
+
+
 Create Random Product
     [Documentation]    Creates a product with randomly generated data and returns the product data and API response.
     [Arguments]    ${token}    ${expected_status}=201
